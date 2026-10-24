@@ -50,6 +50,17 @@ footer a:focus-visible,footer a:hover{background:var(--text);color:var(--bg)}
 .sz{display:flex;gap:8px;margin-top:8px}.sz span{flex:1;border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center;font-size:12px;color:var(--muted);font-weight:400}
 .sz b{display:block;color:var(--text);font-size:15px;font-weight:800;margin-top:2px}
 .lk{color:var(--text)}
+[hidden]{display:none!important}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:640px;margin:0 auto;padding:14px 20px 0}
+.g a{display:block;text-align:center;padding:12px 6px;border:1px solid var(--line);border-radius:10px;font-weight:600;font-size:14px;color:var(--text);text-decoration:none}
+.g a:focus-visible,.g a:hover,.g a.hl{background:var(--text);color:var(--bg);border-color:var(--text)}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:9;background:var(--bg);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 16px;transform:translateY(-130%);visibility:hidden;transition:transform .2s}
+.bar.on{transform:none;visibility:visible}
+.bar small{display:block;color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
+.bar span{font-weight:800;font-size:15px}
+.bar button,.sh button{font:inherit;font-weight:600;font-size:13px;color:var(--bg);background:var(--text);border:0;border-radius:999px;padding:9px 14px;cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.96);overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 0 24px}
+.sh{display:flex;justify-content:space-between;align-items:center;max-width:640px;margin:0 auto;padding:0 20px 4px;font-size:16px}
 </style>
 </head>
 <body>
@@ -58,7 +69,9 @@ footer a:focus-visible,footer a:hover{background:var(--text);color:var(--bg)}
 <p class="sub">Kavuruyoruz, paylaşıyoruz ve kendi kurallarımızı yazıyoruz.</p>
 </header>
 <div class="legend"><span>❄ Soğuk</span><span>☕ Sıcak</span></div>
-<nav id="nav"></nav>
+<div id="grid" class="g"></div>
+<div id="bar" class="bar"><div><small>Şu an</small><span id="cur"></span></div><button id="open" type="button">Kategoriler ▾</button></div>
+<div id="sheet" class="sheet" hidden role="dialog" aria-label="Kategoriler"><div class="sh"><b>Kategoriler</b><button id="close" type="button">Kapat</button></div><div id="sg" class="g"></div></div>
 <main id="menu"></main>
 <main>
 <div class="manifesto">
@@ -86,7 +99,18 @@ html+='<section id="'+id+'"><h2>'+e(s.title)+'</h2>'+(s.note?'<p class="note">'+
 (s.type=="brew"?[]:(s.items||[])).forEach(function(i){html+='<div class="item"><div><b>'+e(i.n)+'</b>'+(T[i.t]?'<span class="tag">'+T[i.t]+'</span>':'')+(i.d?'<small>'+e(i.d)+'</small>':'')+'</div><span class="price">'+e(i.p)+'₺</span></div>'});
 if(s.type=="brew")html+=brewCards(s.cards||[]);
 html+='</section>'});
-document.getElementById("nav").innerHTML=nav;document.getElementById("menu").innerHTML=html;
+var gr=document.getElementById("grid"),sg=document.getElementById("sg"),bar=document.getElementById("bar"),sh=document.getElementById("sheet"),cur=document.getElementById("cur");
+gr.innerHTML=nav;sg.innerHTML=nav;
+var secs=[].slice.call(document.querySelectorAll("section")),tk=false;
+function upd(){tk=false;var a=secs[0],y=Math.max(window.innerHeight*0.2,70);secs.forEach(function(s){if(s.getBoundingClientRect().top<=y)a=s});
+if(a){cur.textContent=a.querySelector("h2").textContent;[].forEach.call(sg.children,function(l){l.classList.toggle("hl",l.getAttribute("href")=="#"+a.id)})}
+bar.classList.toggle("on",gr.getBoundingClientRect().bottom<0)}
+window.addEventListener("scroll",function(){if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});
+function so(v){sh.hidden=!v;document.body.style.overflow=v?"hidden":""}
+document.getElementById("open").onclick=function(){so(true)};document.getElementById("close").onclick=function(){so(false)};
+sg.onclick=function(ev){if(ev.target.closest("a"))so(false)};
+document.addEventListener("keydown",function(ev){if(ev.key=="Escape")so(false)});
+upd();document.getElementById("menu").innerHTML=html;
 }).catch(function(){document.getElementById("menu").innerHTML='<p class="note">Menü yüklenemedi. Lütfen sayfayı yenileyin.</p>'});
 </script>
 </body>
