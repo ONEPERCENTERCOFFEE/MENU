@@ -38,7 +38,7 @@ var sb=supabase.createClient("https://ojfmpnqyrdfybbmchbvq.supabase.co","sb_publ
 var $=function(i){return document.getElementById(i)};
 function E(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function F(n){return Number(n).toLocaleString("tr-TR")+"₺"}
-var C=[],me=null,view="login",tb=0,ct=0,md=null,msg="",O={},sel={},PM=[],RP=null,busy=false,ch=null,rt=null;
+var C=[],TL=[],TN={},me=null,view="login",tb=0,ct=0,md=null,msg="",O={},sel={},PM=[],RP=null,busy=false,ch=null,rt=null;
 var rd=new Date().toLocaleDateString("sv-SE"),re=rd;
 var D=(function(){try{return JSON.parse(localStorage.getItem("opd"))||{}}catch(e){return{}}})();
 function sd(){try{localStorage.setItem("opd",JSON.stringify(D))}catch(e){}}
@@ -49,24 +49,26 @@ function LN(id){return O[tb].order_items.filter(function(l){return l.id==id})[0]
 async function rp(fn,args){var r=await sb.rpc(fn,args);if(r.error){msg=r.error.message;return false}return true}
 async function ld(){var r=await sb.from("orders").select("id,table_no,order_items(id,name,price,qty,paid_qty,status,reason,approved_by,created_at)").eq("status","open");
 if(r.error){msg="Bağlantı hatası: "+r.error.message;return}
-O={};r.data.forEach(function(o){o.order_items.sort(function(a,b){return a.id-b.id});O[o.table_no]=o})}
+O={};r.data.forEach(function(o){o.order_items.sort(function(a,b){return a.id-b.id});O[o.table_no]=o});var t=await sb.from("pos_tables").select("id,name").eq("active",true).order("id");if(!t.error){TL=t.data;TN={};TL.forEach(function(x){TN[x.id]=x.name})}}
 async function lpm(){var o=O[tb];if(!o){PM=[];return}var r=await sb.from("payments").select("method,amount").eq("order_id",o.id).order("id");PM=r.data||[]}
 async function lrep(){var s=new Date(rd+"T00:00:00"),e=new Date(re+"T00:00:00");e.setDate(e.getDate()+1);
-async function q(t){var out=[],k=0;while(true){var r=await sb.from(t).select("*").gte("created_at",s.toISOString()).lt("created_at",e.toISOString()).order("id").range(k,k+999);if(r.error||!r.data)break;out=out.concat(r.data);if(r.data.length<1000)break;k+=1000}return out}
-var a=await Promise.all([q("payments"),q("order_items"),sb.from("profiles").select("id,name")]);
-RP={p:a[0],i:a[1],n:{}};(a[2].data||[]).forEach(function(x){RP.n[x.id]=x.name})}
-function sub(){if(ch)return;ch=sb.channel("op");["orders","order_items","payments"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},rl)});ch.subscribe()}
-function rl(){clearTimeout(rt);rt=setTimeout(async function(){if(!me)return;await ld();if(view!="report"&&(!md||md.k=="pay")){if(md)await lpm();R()}},300)}
+var it=[],k=0;while(true){var r=await sb.from("order_items").select("*").gte("created_at",s.toISOString()).lt("created_at",e.toISOString()).order("id").range(k,k+999);if(r.error||!r.data)break;it=it.concat(r.data);if(r.data.length<1000)break;k+=1000}
+var ids=[];it.forEach(function(l){if(ids.indexOf(l.order_id)<0)ids.push(l.order_id)});
+var pp=[];for(k=0;k<ids.length;k+=50){var q=await sb.from("payments").select("*").in("order_id",ids.slice(k,k+50));pp=pp.concat(q.data||[])}
+var pr=await sb.from("profiles").select("id,name");
+RP={p:pp,i:it,n:{}};(pr.data||[]).forEach(function(x){RP.n[x.id]=x.name})}
+function sub(){if(ch)return;ch=sb.channel("op");["orders","order_items","payments","pos_tables"].forEach(function(t){ch.on("postgres_changes",{event:"*",schema:"public",table:t},rl)});ch.subscribe()}
+function rl(){clearTimeout(rt);rt=setTimeout(async function(){if(!me)return;await ld();if(view!="report"&&view!="tcfg"&&(!md||md.k=="pay")){if(md)await lpm();R()}},300)}
 async function after(){var u=(await sb.auth.getUser()).data.user;
 if(!u){return false}
 var p=await sb.from("profiles").select("name,role,active").eq("id",u.id).maybeSingle();
 if(p.error||!p.data||!p.data.active){await sb.auth.signOut();msg="Bu hesap yetkili değil";return false}
 me=p.data;view="tables";await ld();sub();return true}
 function vLogin(){return'<h1>ONE<br>PERCENTER</h1><p class="mu">Kasa girişi</p><input id="un" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="username" style="margin:6px 0"><input id="pw" type="password" placeholder="Şifre" autocomplete="current-password" style="margin:6px 0 10px"><button class="p w" data-a="lg">Giriş</button><p class="er">'+E(msg)+'</p>'}
-function vTables(){var h='<div class="top"><b>'+E(me.name)+'</b><span>'+(me.role=="yonetici"?'<button data-a="rep">Rapor</button> ':'')+'<button data-a="out">Çıkış</button></span></div>'+(msg?'<p class="er">'+E(msg)+'</p>':'')+'<div class="grid">';
-for(var i=1;i<=12;i++){var o=O[i];h+='<button class="tb'+(o?' f':'')+'" data-a="tb" data-i="'+i+'">Masa '+i+'<br><span class="sm">'+(o?F(due(o)):'Boş')+'</span></button>'}
+function vTables(){var h='<div class="top"><b>'+E(me.name)+'</b><span>'+(me.role=="yonetici"?'<button data-a="tc">Masalar</button> <button data-a="rep">Rapor</button> ':'')+'<button data-a="out">Çıkış</button></span></div>'+(msg?'<p class="er">'+E(msg)+'</p>':'')+'<div class="grid">';
+TL.forEach(function(t){var o=O[t.id];h+='<button class="tb'+(o?' f':'')+'" data-a="tb" data-i="'+t.id+'">'+E(t.name)+'<br><span class="sm">'+(o?F(due(o)):'Boş')+'</span></button>'})
 return h+'</div>'}
-function vOrder(){var o=O[tb],L=o?o.order_items:[],d=D[tb]||[],h='<div class="top"><button data-a="bk">← Masalar</button><b>Masa '+tb+' · '+F(tot(L))+'</b></div>';
+function vOrder(){var o=O[tb],L=o?o.order_items:[],d=D[tb]||[],h='<div class="top"><button data-a="bk">← Masalar</button><b>'+E(TN[tb]||'Masa '+tb)+' · '+F(tot(L))+'</b></div>';
 if(msg)h+='<p class="er">'+E(msg)+'</p>';
 if(d.length){h+='<div class="cd" style="border-color:var(--wa)"><b class="wa" style="font-size:15px">Onay bekleyen (masaya yazılmadı)</b>';
 d.forEach(function(l,i){h+='<div class="row"><span>'+l.q+' × '+E(l.n)+'</span><span style="display:flex;gap:6px;align-items:center">'+F(l.p*l.q)+'<button data-a="dm" data-i="'+i+'">−</button><button data-a="dp" data-i="'+i+'">+</button></span></div>'});
@@ -84,6 +86,9 @@ h+='</div></div>'});
 if(L.length){if(d.length)h+='<p class="mu sm" style="margin-top:12px">Ödemeye geçmek için önce onay bekleyen ürünleri onaylayın ya da temizleyin.</p>';
 else h+='<button class="p w" data-a="cl" style="margin-top:16px">Ödeme / hesabı kapat · kalan '+F(due(o))+'</button>'}
 return h}
+function vTcfg(){var h='<div class="top"><button data-a="bk">← Masalar</button><b>Masaları düzenle</b></div>'+(msg?'<p class="er">'+E(msg)+'</p>':'');
+TL.forEach(function(t){h+='<div class="row"><input id="tn'+t.id+'" value="'+E(t.name)+'" style="flex:1"><button data-a="ts" data-i="'+t.id+'">Kaydet</button><button class="d" data-a="tx" data-i="'+t.id+'">Sil</button></div>'});
+return h+'<h2>Yeni masa</h2><div class="row"><input id="tnew" placeholder="Masa adı (örn. Bahçe 1)" style="flex:1"><button class="p" data-a="ta">Ekle</button></div><p class="mu sm">Silinen masanın geçmiş kayıtları raporlarda kalır. Açık hesabı olan masa silinemez.</p>'}
 function vModal(){var h='<div class="ov"><div class="mdl">';
 if(md.k=="pay"){var o=O[tb];
 if(!o)return h+'<p>Masa kapandı.</p><button class="w" data-a="mc">Tamam</button></div></div>';
@@ -100,21 +105,23 @@ if(me.role!="yonetici")h+='<input id="ap" type="password" inputmode="numeric" pl
 h+='<p class="er">'+E(msg)+'</p><button class="p w" data-a="mk">Onayla</button>'}
 return h+'<button class="w" data-a="mc" style="margin-top:8px">'+(md.k=="pay"?"Geri dön":"Vazgeç")+'</button></div></div>'}
 function tbl(hd,rows){if(!rows.length)return'<p class="mu sm">Kayıt yok.</p>';return'<table><tr>'+hd.map(function(x,i){return'<th'+(i==hd.length-1?' class="r"':'')+'>'+x+'</th>'}).join('')+'</tr>'+rows.map(function(r){return'<tr>'+r.map(function(x,i){return'<td'+(i==r.length-1?' class="r"':'')+'>'+E(x)+'</td>'}).join('')+'</tr>'}).join('')+'</table>'}
-function vReport(){var h='<div class="top"><button data-a="bk">← Masalar</button><b>Rapor</b></div><div style="display:flex;gap:8px;margin-bottom:8px"><div style="flex:1"><span class="mu sm">Başlangıç</span><input type="date" id="rd" value="'+rd+'"></div><div style="flex:1"><span class="mu sm">Bitiş</span><input type="date" id="re" value="'+re+'"></div></div><div class="chips"><button data-a="rg" data-v="today">Bugün</button><button data-a="rg" data-v="yday">Dün</button><button data-a="rg" data-v="7">Son 7 gün</button><button data-a="rg" data-v="month">Bu ay</button></div>';
+function vReport(){var h='<div class="top"><button data-a="bk">← Masalar</button><b>Rapor</b></div><div style="display:flex;gap:8px;margin-bottom:8px"><div style="flex:1"><span class="mu sm">Başlangıç</span><input type="date" id="rd" value="'+rd+'"></div><div style="flex:1"><span class="mu sm">Bitiş</span><input type="date" id="re" value="'+re+'"></div></div><div class="chips"><button data-a="rg" data-v="today">Bugün</button><button data-a="rg" data-v="yday">Dün</button><button data-a="rg" data-v="7">Son 7 gün</button><button data-a="rg" data-v="month">Bu ay</button></div><p class="mu sm">Ürünler, masaya girildiği güne göre hesaplanır.</p>';
 if(!RP)return h+'<p class="mu">Yükleniyor...</p>';
-var P={},O2={nakit:0,kart:0},ci=0,ik=[0,0],ip=[0,0],W={},X=[],ords={};
-RP.p.forEach(function(p){var a=Number(p.amount);ci+=a;O2[p.method]+=a;ords[p.order_id]=1;var n=RP.n[p.created_by]||"?";W[n]=W[n]||[0,0];W[n][0]++;W[n][1]+=a});
-RP.i.forEach(function(l){var c=l.price*l.qty;if(l.status=="ok"){if(l.paid_qty){P[l.name]=P[l.name]||[0,0];P[l.name][0]+=l.paid_qty;P[l.name][1]+=l.paid_qty*l.price}}
-else{var z=l.status=="ikram"?ik:ip;z[0]+=l.qty;z[1]+=c;X.push([l.qty+"× "+l.name,l.status=="ikram"?"İkram":"İptal",l.reason||"",(RP.n[l.added_by]||"?")+" · "+(l.approved_by||"")])}});
-var DY={};RP.p.forEach(function(p){var k=new Date(p.created_at).toLocaleDateString("sv-SE");DY[k]=DY[k]||[{},0];DY[k][0][p.order_id]=1;DY[k][1]+=Number(p.amount)});
+var P={},O2={nakit:0,kart:0},ci=0,ik=[0,0],ip=[0,0],W={},X=[],ords={},DY={},IM={};
+RP.i.forEach(function(l){IM[l.id]=l;
+if(l.status=="ok"){if(l.paid_qty){var c=l.paid_qty*l.price;ci+=c;P[l.name]=P[l.name]||[0,0];P[l.name][0]+=l.paid_qty;P[l.name][1]+=c}}
+else{var z=l.status=="ikram"?ik:ip;z[0]+=l.qty;z[1]+=l.price*l.qty;X.push([l.qty+"× "+l.name,l.status=="ikram"?"İkram":"İptal",l.reason||"",(RP.n[l.added_by]||"?")+" · "+(l.approved_by||"")])}});
+RP.p.forEach(function(p){(p.items||[]).forEach(function(e){var l=IM[e.item];if(!l)return;var a=e.qty*l.price;O2[p.method]+=a;ords[p.order_id]=1;
+var n=RP.n[p.created_by]||"?";W[n]=W[n]||[{},0];W[n][0][p.id]=1;W[n][1]+=a;
+var k=new Date(l.created_at).toLocaleDateString("sv-SE");DY[k]=DY[k]||[{},0];DY[k][0][p.order_id]=1;DY[k][1]+=a})});
 function cd(a,b,c){return'<div class="cd"><span class="mu sm">'+a+'</span><b>'+b+'</b>'+(c?'<span class="mu sm">'+c+'</span>':'')+'</div>'}
 h+='<div class="cards">'+cd("Toplam ciro",F(ci))+cd("Ödenen hesap",Object.keys(ords).length)+cd("Nakit",F(O2.nakit))+cd("Kart",F(O2.kart))+cd("İkram",ik[0]+" adet",F(ik[1]))+cd("İptal",ip[0]+" adet",F(ip[1]))+'</div>';
 var pr=Object.keys(P).sort(function(a,b){return P[b][0]-P[a][0]}).map(function(k){return[k,P[k][0]+" adet",F(P[k][1])]});
 h+=(Object.keys(DY).length>1?'<h2>Günlere göre</h2>'+tbl(["Tarih","Hesap","Ciro"],Object.keys(DY).sort().map(function(k){return[k.split("-").reverse().join("."),Object.keys(DY[k][0]).length,F(DY[k][1])]})):'')+'<h2>Ürün bazında satış</h2>'+tbl(["Ürün","Adet","Tutar"],pr);
-h+='<h2>Garson bazında tahsilat</h2>'+tbl(["Kişi","İşlem","Tutar"],Object.keys(W).map(function(k){return[k,W[k][0],F(W[k][1])]}));
+h+='<h2>Garson bazında tahsilat</h2>'+tbl(["Kişi","İşlem","Tutar"],Object.keys(W).map(function(k){return[k,Object.keys(W[k][0]).length,F(W[k][1])]}));
 h+='<h2>İptal ve ikram kayıtları</h2>'+tbl(["Ürün","Tür","Neden","Ekleyen · onaylayan"],X);
 return h}
-function R(){if(!$("app"))return;var h=view=="login"?vLogin():view=="tables"?vTables():view=="order"?vOrder():vReport();$("app").innerHTML=h+(md&&me?vModal():"")}
+function R(){if(!$("app"))return;var h=view=="login"?vLogin():view=="tables"?vTables():view=="order"?vOrder():view=="tcfg"?vTcfg():vReport();$("app").innerHTML=h+(md&&me?vModal():"")}
 document.addEventListener("change",async function(ev){if(ev.target.id=="rd"||ev.target.id=="re"){if(ev.target.id=="rd")rd=ev.target.value||rd;else re=ev.target.value||re;if(rd>re){if(ev.target.id=="rd")re=rd;else rd=re}RP=null;R();await lrep();R()}});
 document.addEventListener("click",async function(ev){var b=ev.target.closest("[data-a]");if(!b||busy)return;busy=true;
 var a=b.dataset.a,i=+b.dataset.i,v=b.dataset.v;msg="";
@@ -126,6 +133,10 @@ else if(a=="tb"){tb=i;ct=0;view="order";await ld()}
 else if(a=="bk"){view="tables";await ld()}
 else if(a=="rep"){view="report";rd=re=new Date().toLocaleDateString("sv-SE");RP=null;R();await lrep()}
 else if(a=="rg"){var t=new Date(),f=new Date();if(v=="yday"){f.setDate(f.getDate()-1);t=new Date(f)}else if(v=="7")f.setDate(f.getDate()-6);else if(v=="month")f.setDate(1);rd=f.toLocaleDateString("sv-SE");re=t.toLocaleDateString("sv-SE");RP=null;R();await lrep()}
+else if(a=="tc"){view="tcfg";await ld()}
+else if(a=="ts"){if(await rp("save_table",{p_id:i,p_name:$("tn"+i).value}))await ld()}
+else if(a=="ta"){if(await rp("save_table",{p_id:null,p_name:$("tnew").value}))await ld()}
+else if(a=="tx"){if(confirm("Bu masa silinsin mi?")){if(await rp("remove_table",{p_id:i}))await ld()}}
 else if(a=="ct")ct=i;
 else if(a=="add"){var m=C[ct].i[i],d=D[tb]=D[tb]||[],l=d.filter(function(x){return x.n==m.n})[0];if(l)l.q++;else d.push({n:m.n,p:m.p,q:1});sd()}
 else if(a=="dp"){D[tb][i].q++;sd()}
