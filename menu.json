@@ -7,55 +7,55 @@
     {
      "n": "Espresso",
      "d": "",
-     "p": 75,
+     "p": 90,
      "t": "b"
     },
     {
      "n": "Americano",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "b"
     },
     {
      "n": "Cortado",
      "d": "",
-     "p": 110,
+     "p": 135,
      "t": "h"
     },
     {
      "n": "Flat White",
      "d": "",
-     "p": 120,
+     "p": 140,
      "t": "h"
     },
     {
      "n": "Latte",
      "d": "",
-     "p": 120,
+     "p": 140,
      "t": "b"
     },
     {
      "n": "Mocha",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "b"
     },
     {
      "n": "White Mocha",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "b"
     },
     {
      "n": "Cold Brew",
      "d": "",
-     "p": 120,
+     "p": 140,
      "t": "c"
     },
     {
      "n": "Filtre Kahve",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "b"
     }
    ]
@@ -67,49 +67,49 @@
     {
      "n": "İşte Bu",
      "d": "az sulu americano",
-     "p": 100,
+     "p": 125,
      "t": "b"
     },
     {
      "n": "Afro",
      "d": "işte bu, fındık, çikolata",
-     "p": 130,
+     "p": 148,
      "t": "b"
     },
     {
      "n": "Sarman",
      "d": "tarçın, karamel, fındık, espresso, süt",
-     "p": 150,
+     "p": 170,
      "t": "b"
     },
     {
      "n": "Pumpkin",
      "d": "bal kabağı, espresso, süt",
-     "p": 140,
+     "p": 160,
      "t": "b"
     },
     {
      "n": "Kuzgun",
      "d": "sıcak çikolata, espresso",
-     "p": 150,
+     "p": 170,
      "t": "b"
     },
     {
      "n": "Nebula",
      "d": "chai tea, espresso, süt",
-     "p": 140,
+     "p": 160,
      "t": "b"
     },
     {
      "n": "Ballı",
      "d": "bal, espresso, süt",
-     "p": 150,
+     "p": 170,
      "t": "b"
     },
     {
      "n": "Hippi",
      "d": "zencefil, hindistan cevizi, tarçın, espresso, süt",
-     "p": 150,
+     "p": 170,
      "t": "b"
     }
    ]
@@ -121,31 +121,31 @@
     {
      "n": "Matcha",
      "d": "",
-     "p": 175,
+     "p": 200,
      "t": "b"
     },
     {
      "n": "Mango-Vanilya",
      "d": "",
-     "p": 200,
+     "p": 250,
      "t": "c"
     },
     {
      "n": "Çilek-Vanilya",
      "d": "",
-     "p": 200,
+     "p": 250,
      "t": "c"
     },
     {
      "n": "Çilek",
      "d": "",
-     "p": 200,
+     "p": 250,
      "t": "c"
     },
     {
      "n": "Badem-Vanilya",
      "d": "",
-     "p": 200,
+     "p": 250,
      "t": "c"
     }
    ]
@@ -157,43 +157,43 @@
     {
      "n": "Mevsim Normalleri",
      "d": "kararsızsan bize bırak",
-     "p": 150,
+     "p": 175,
      "t": "c"
     },
     {
      "n": "Tarlabaşı",
      "d": "limon, portakal, vişne",
-     "p": 140,
+     "p": 172,
      "t": "c"
     },
     {
      "n": "Egzoz",
      "d": "chai tea, limonata, tabasco sos",
-     "p": 130,
+     "p": 175,
      "t": "c"
     },
     {
      "n": "Dağ Keçisi",
      "d": "limon, nane, esmer şeker, tonik, soda",
-     "p": 150,
+     "p": 175,
      "t": "c"
     },
     {
      "n": "Oklu Kirpi",
      "d": "şeftali, limon, şeker, soda",
-     "p": 150,
+     "p": 175,
      "t": "c"
     },
     {
      "n": "Kayra",
      "d": "ananas, hindistan cevizi, süt",
-     "p": 150,
+     "p": 175,
      "t": "c"
     },
     {
      "n": "Reddy",
      "d": "nar, şeftali, portakal",
-     "p": 150,
+     "p": 175,
      "t": "c"
     }
    ]
@@ -205,25 +205,25 @@
     {
      "n": "Limonata",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "c"
     },
     {
      "n": "Reyhanlı Gazoz",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "c"
     },
     {
      "n": "Zencefilli Gazoz",
      "d": "",
-     "p": 110,
+     "p": 125,
      "t": "c"
     },
     {
      "n": "Sade Gazoz",
      "d": "",
-     "p": 110,
+     "p": 125,
      "t": "c"
     },
     {
@@ -235,13 +235,13 @@
     {
      "n": "Maden Suyu (İnişdibi)",
      "d": "",
-     "p": 60,
+     "p": 80,
      "t": "c"
     },
     {
      "n": "Su",
      "d": "",
-     "p": 30,
+     "p": 40,
      "t": "c"
     }
    ]
@@ -253,37 +253,37 @@
     {
      "n": "Türk Kahvesi",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "h"
     },
     {
      "n": "Sıcak Çikolata",
      "d": "",
-     "p": 120,
+     "p": 150,
      "t": "h"
     },
     {
      "n": "Bloody Chocolate",
      "d": "",
-     "p": 130,
+     "p": 160,
      "t": "h"
     },
     {
      "n": "Sahlep",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "h"
     },
     {
      "n": "Ballı Süt",
      "d": "",
-     "p": 100,
+     "p": 125,
      "t": "h"
     },
     {
      "n": "Chai Tea Latte",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "h"
     }
    ]
@@ -295,43 +295,37 @@
     {
      "n": "Kupa Çay",
      "d": "",
-     "p": 50,
+     "p": 75,
      "t": "h"
     },
     {
      "n": "Jasmine Pearls",
      "d": "",
-     "p": 150,
+     "p": 175,
      "t": "h"
     },
     {
      "n": "Berry Punch",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "h"
     },
     {
      "n": "Energy Boost",
      "d": "",
-     "p": 130,
+     "p": 150,
      "t": "h"
     },
     {
      "n": "Milk Oolong",
      "d": "",
-     "p": 150,
+     "p": 174,
      "t": "h"
     },
     {
      "n": "Turmeric Chai",
      "d": "",
-     "p": 130,
-     "t": "h"
-    },
-    {
-     "n": "Chocolate Kiss",
-     "d": "",
-     "p": 130,
+     "p": 150,
      "t": "h"
     }
    ]
