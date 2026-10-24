@@ -57,40 +57,17 @@ footer a:focus-visible,footer a:hover{background:var(--text);color:var(--bg)}
 </main>
 <footer><a href="https://instagram.com/onepercentercoffeeco" rel="noopener">@onepercentercoffeeco</a></footer>
 <script>
-var C="❄",H="☕",B="❄ ☕";
-var M=[
-["Espresso Bar","espresso",[
-["Espresso","",75,B],["Americano","",100,B],["Cortado","",110,H],["Flat White","",120,H],["Latte","",120,B],["Mocha","",130,B],["White Mocha","",130,B],["Cold Brew","",120,C],["Filtre Kahve","",100,B]],
-"Nitelikli kahvelerimiz ve demleme yöntemlerimiz için OP BREW BAR’a bakınız."],
-["Unique to Us","unique",[
-["İşte Bu","az sulu americano",100,B],["Afro","işte bu, fındık, çikolata",130,B],["Sarman","tarçın, karamel, fındık, espresso, süt",150,B],["Pumpkin","bal kabağı, espresso, süt",140,B],["Kuzgun","sıcak çikolata, espresso",150,B],["Nebula","chai tea, espresso, süt",140,B],["Ballı","bal, espresso, süt",150,B],["Hippi","zencefil, hindistan cevizi, tarçın, espresso, süt",150,B]]],
-["Matcha","matcha",[
-["Matcha","",175,B],["Mango-Vanilya","",200,C],["Çilek-Vanilya","",200,C],["Çilek","",200,C],["Badem-Vanilya","",200,C]]],
-["Mocktails","mocktails",[
-["Mevsim Normalleri","kararsızsan bize bırak",150,C],["Tarlabaşı","limon, portakal, vişne",140,C],["Egzoz","chai tea, limonata, tabasco sos",130,C],["Dağ Keçisi","limon, nane, esmer şeker, tonik, soda",150,C],["Oklu Kirpi","şeftali, limon, şeker, soda",150,C],["Kayra","ananas, hindistan cevizi, süt",150,C],["Reddy","nar, şeftali, portakal",150,C]]],
-["Soğuk İçecekler","soguk",[
-["Limonata","",130,C],["Reyhanlı Gazoz","",100,C],["Zencefilli Gazoz","",110,C],["Sade Gazoz","",110,C],["Churchill","",100,C],["Maden Suyu (İnişdibi)","",60,C],["Su","",30,C]]],
-["Sıcak İçecekler","sicak",[
-["Türk Kahvesi","",100,H],["Sıcak Çikolata","",120,H],["Bloody Chocolate","",130,H],["Sahlep","",100,H],["Ballı Süt","",100,H],["Chai Tea Latte","",130,H]]],
-["Çaylar","caylar",[
-["Kupa Çay","",50,H],["Jasmine Pearls","",150,H],["Berry Punch","",130,H],["Energy Boost","",130,H],["Milk Oolong","",150,H],["Turmeric Chai","",130,H],["Chocolate Kiss","",130,H]]],
-["Sandviçler","sandvic",[
-["%1 Füme","hindi füme, roka, cheddar peyniri, kuru domates, pesto sos",200,""],["Taceddin","dana füme, sriracha, acı mayonez, mısır, soğan turşusu",250,""],["Beyaz 03","beyaz peynir, kuru domates, ceviz, pesto sos, roka",180,""]]],
-["Tatlılar","tatli",[
-["Cookie","",125,""],["San Sebastian Cheesecake","",175,""],["Yaban Mersinli Cheesecake","",175,""],["Brownie","",150,""]]]
-];
+var T={c:"❄",h:"☕",b:"❄ ☕"};
+function e(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+fetch("menu.json?v="+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
 var nav="",html="";
-M.forEach(function(s){
-nav+='<a href="#'+s[1]+'">'+s[0]+'</a>';
-html+='<section id="'+s[1]+'"><h2>'+s[0]+'</h2>';
-if(s[3])html+='<p class="note">'+s[3]+'</p>';
-s[2].forEach(function(i){
-html+='<div class="item"><div><b>'+i[0]+'</b>'+(i[3]?'<span class="tag">'+i[3]+'</span>':'')+(i[1]?'<small>'+i[1]+'</small>':'')+'</div><span class="price">'+i[2]+'₺</span></div>';
-});
-html+='</section>';
-});
-document.getElementById("nav").innerHTML=nav;
-document.getElementById("menu").innerHTML=html;
+d.sections.forEach(function(s,k){var id="b"+k;
+nav+='<a href="#'+id+'">'+e(s.title)+'</a>';
+html+='<section id="'+id+'"><h2>'+e(s.title)+'</h2>'+(s.note?'<p class="note">'+e(s.note)+'</p>':'');
+s.items.forEach(function(i){html+='<div class="item"><div><b>'+e(i.n)+'</b>'+(T[i.t]?'<span class="tag">'+T[i.t]+'</span>':'')+(i.d?'<small>'+e(i.d)+'</small>':'')+'</div><span class="price">'+e(i.p)+'₺</span></div>'});
+html+='</section>'});
+document.getElementById("nav").innerHTML=nav;document.getElementById("menu").innerHTML=html;
+}).catch(function(){document.getElementById("menu").innerHTML='<p class="note">Menü yüklenemedi. Lütfen sayfayı yenileyin.</p>'});
 </script>
 </body>
 </html>

@@ -1,0 +1,394 @@
+{
+ "sections": [
+  {
+   "title": "Espresso Bar",
+   "note": "Nitelikli kahvelerimiz ve demleme yöntemlerimiz için OP BREW BAR’a bakınız.",
+   "items": [
+    {
+     "n": "Espresso",
+     "d": "",
+     "p": 75,
+     "t": "b"
+    },
+    {
+     "n": "Americano",
+     "d": "",
+     "p": 100,
+     "t": "b"
+    },
+    {
+     "n": "Cortado",
+     "d": "",
+     "p": 110,
+     "t": "h"
+    },
+    {
+     "n": "Flat White",
+     "d": "",
+     "p": 120,
+     "t": "h"
+    },
+    {
+     "n": "Latte",
+     "d": "",
+     "p": 120,
+     "t": "b"
+    },
+    {
+     "n": "Mocha",
+     "d": "",
+     "p": 130,
+     "t": "b"
+    },
+    {
+     "n": "White Mocha",
+     "d": "",
+     "p": 130,
+     "t": "b"
+    },
+    {
+     "n": "Cold Brew",
+     "d": "",
+     "p": 120,
+     "t": "c"
+    },
+    {
+     "n": "Filtre Kahve",
+     "d": "",
+     "p": 100,
+     "t": "b"
+    }
+   ]
+  },
+  {
+   "title": "Unique to Us",
+   "note": "",
+   "items": [
+    {
+     "n": "İşte Bu",
+     "d": "az sulu americano",
+     "p": 100,
+     "t": "b"
+    },
+    {
+     "n": "Afro",
+     "d": "işte bu, fındık, çikolata",
+     "p": 130,
+     "t": "b"
+    },
+    {
+     "n": "Sarman",
+     "d": "tarçın, karamel, fındık, espresso, süt",
+     "p": 150,
+     "t": "b"
+    },
+    {
+     "n": "Pumpkin",
+     "d": "bal kabağı, espresso, süt",
+     "p": 140,
+     "t": "b"
+    },
+    {
+     "n": "Kuzgun",
+     "d": "sıcak çikolata, espresso",
+     "p": 150,
+     "t": "b"
+    },
+    {
+     "n": "Nebula",
+     "d": "chai tea, espresso, süt",
+     "p": 140,
+     "t": "b"
+    },
+    {
+     "n": "Ballı",
+     "d": "bal, espresso, süt",
+     "p": 150,
+     "t": "b"
+    },
+    {
+     "n": "Hippi",
+     "d": "zencefil, hindistan cevizi, tarçın, espresso, süt",
+     "p": 150,
+     "t": "b"
+    }
+   ]
+  },
+  {
+   "title": "Matcha",
+   "note": "",
+   "items": [
+    {
+     "n": "Matcha",
+     "d": "",
+     "p": 175,
+     "t": "b"
+    },
+    {
+     "n": "Mango-Vanilya",
+     "d": "",
+     "p": 200,
+     "t": "c"
+    },
+    {
+     "n": "Çilek-Vanilya",
+     "d": "",
+     "p": 200,
+     "t": "c"
+    },
+    {
+     "n": "Çilek",
+     "d": "",
+     "p": 200,
+     "t": "c"
+    },
+    {
+     "n": "Badem-Vanilya",
+     "d": "",
+     "p": 200,
+     "t": "c"
+    }
+   ]
+  },
+  {
+   "title": "Mocktails",
+   "note": "",
+   "items": [
+    {
+     "n": "Mevsim Normalleri",
+     "d": "kararsızsan bize bırak",
+     "p": 150,
+     "t": "c"
+    },
+    {
+     "n": "Tarlabaşı",
+     "d": "limon, portakal, vişne",
+     "p": 140,
+     "t": "c"
+    },
+    {
+     "n": "Egzoz",
+     "d": "chai tea, limonata, tabasco sos",
+     "p": 130,
+     "t": "c"
+    },
+    {
+     "n": "Dağ Keçisi",
+     "d": "limon, nane, esmer şeker, tonik, soda",
+     "p": 150,
+     "t": "c"
+    },
+    {
+     "n": "Oklu Kirpi",
+     "d": "şeftali, limon, şeker, soda",
+     "p": 150,
+     "t": "c"
+    },
+    {
+     "n": "Kayra",
+     "d": "ananas, hindistan cevizi, süt",
+     "p": 150,
+     "t": "c"
+    },
+    {
+     "n": "Reddy",
+     "d": "nar, şeftali, portakal",
+     "p": 150,
+     "t": "c"
+    }
+   ]
+  },
+  {
+   "title": "Soğuk İçecekler",
+   "note": "",
+   "items": [
+    {
+     "n": "Limonata",
+     "d": "",
+     "p": 130,
+     "t": "c"
+    },
+    {
+     "n": "Reyhanlı Gazoz",
+     "d": "",
+     "p": 100,
+     "t": "c"
+    },
+    {
+     "n": "Zencefilli Gazoz",
+     "d": "",
+     "p": 110,
+     "t": "c"
+    },
+    {
+     "n": "Sade Gazoz",
+     "d": "",
+     "p": 110,
+     "t": "c"
+    },
+    {
+     "n": "Churchill",
+     "d": "",
+     "p": 100,
+     "t": "c"
+    },
+    {
+     "n": "Maden Suyu (İnişdibi)",
+     "d": "",
+     "p": 60,
+     "t": "c"
+    },
+    {
+     "n": "Su",
+     "d": "",
+     "p": 30,
+     "t": "c"
+    }
+   ]
+  },
+  {
+   "title": "Sıcak İçecekler",
+   "note": "",
+   "items": [
+    {
+     "n": "Türk Kahvesi",
+     "d": "",
+     "p": 100,
+     "t": "h"
+    },
+    {
+     "n": "Sıcak Çikolata",
+     "d": "",
+     "p": 120,
+     "t": "h"
+    },
+    {
+     "n": "Bloody Chocolate",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    },
+    {
+     "n": "Sahlep",
+     "d": "",
+     "p": 100,
+     "t": "h"
+    },
+    {
+     "n": "Ballı Süt",
+     "d": "",
+     "p": 100,
+     "t": "h"
+    },
+    {
+     "n": "Chai Tea Latte",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    }
+   ]
+  },
+  {
+   "title": "Çaylar",
+   "note": "",
+   "items": [
+    {
+     "n": "Kupa Çay",
+     "d": "",
+     "p": 50,
+     "t": "h"
+    },
+    {
+     "n": "Jasmine Pearls",
+     "d": "",
+     "p": 150,
+     "t": "h"
+    },
+    {
+     "n": "Berry Punch",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    },
+    {
+     "n": "Energy Boost",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    },
+    {
+     "n": "Milk Oolong",
+     "d": "",
+     "p": 150,
+     "t": "h"
+    },
+    {
+     "n": "Turmeric Chai",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    },
+    {
+     "n": "Chocolate Kiss",
+     "d": "",
+     "p": 130,
+     "t": "h"
+    }
+   ]
+  },
+  {
+   "title": "Sandviçler",
+   "note": "",
+   "items": [
+    {
+     "n": "%1 Füme",
+     "d": "hindi füme, roka, cheddar peyniri, kuru domates, pesto sos",
+     "p": 200,
+     "t": ""
+    },
+    {
+     "n": "Taceddin",
+     "d": "dana füme, sriracha, acı mayonez, mısır, soğan turşusu",
+     "p": 250,
+     "t": ""
+    },
+    {
+     "n": "Beyaz 03",
+     "d": "beyaz peynir, kuru domates, ceviz, pesto sos, roka",
+     "p": 180,
+     "t": ""
+    }
+   ]
+  },
+  {
+   "title": "Tatlılar",
+   "note": "",
+   "items": [
+    {
+     "n": "Cookie",
+     "d": "",
+     "p": 125,
+     "t": ""
+    },
+    {
+     "n": "San Sebastian Cheesecake",
+     "d": "",
+     "p": 175,
+     "t": ""
+    },
+    {
+     "n": "Yaban Mersinli Cheesecake",
+     "d": "",
+     "p": 175,
+     "t": ""
+    },
+    {
+     "n": "Brownie",
+     "d": "",
+     "p": 150,
+     "t": ""
+    }
+   ]
+  }
+ ]
+}
