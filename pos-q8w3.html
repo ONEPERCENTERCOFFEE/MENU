@@ -155,7 +155,7 @@ if(!sl.length)msg="Önce ödenecek ürünü seçin";else{var ok=await rp("pay_it
 else if(a=="fin"){if(await rp("close_order",{p_order:O[tb].id})){md=null;view="tables";await ld()}}
 }catch(e){msg="Hata: "+e.message}
 busy=false;R()});
-(async function(){try{var r=await fetch("menu.json?v="+Date.now()),d=await r.json();C=d.sections.map(function(s){return{t:s.title,i:s.items.map(function(x){return{n:x.n,p:+x.p}})}})}catch(e){msg="Menü yüklenemedi"}
+(async function(){try{var r=await fetch("menu.json?v="+Date.now()),d=await r.json();C=d.sections.map(function(s){if(s.type=="brew"){var it=[];(s.cards||[]).forEach(function(k){(k.methods||[]).forEach(function(m){it.push({n:k.name+" · "+m.name,p:+m.price})})});return{t:s.title,i:it}}return{t:s.title,i:(s.items||[]).map(function(x){return{n:x.n,p:+x.p}})}})}catch(e){msg="Menü yüklenemedi"}
 try{var s=await sb.auth.getSession();if(s.data.session)await after()}catch(e){}
 R()})();
 </script>
