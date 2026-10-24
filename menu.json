@@ -335,21 +335,15 @@
    "note": "",
    "items": [
     {
-     "n": "%1 Füme",
-     "d": "hindi füme, roka, cheddar peyniri, kuru domates, pesto sos",
+     "n": "Napoli Mozarella Sandviç",
+     "d": "Artizan Ekmeği, Mozarella Peyniri, Kuru Domates, Pesto Sos, Mayonez, Hardal, Pizza Sosu",
      "p": 200,
      "t": ""
     },
     {
-     "n": "Taceddin",
-     "d": "dana füme, sriracha, acı mayonez, mısır, soğan turşusu",
-     "p": 250,
-     "t": ""
-    },
-    {
-     "n": "Beyaz 03",
-     "d": "beyaz peynir, kuru domates, ceviz, pesto sos, roka",
-     "p": 180,
+     "n": "Focaccia Beş Peynirli Sandviç",
+     "d": "Zeytinli Focaccia Ekmeği, Pesto Sos, Kuru Domates, İsli Çerkez Peyniri, Mozarella, Cheddar, Kaşar, Çeçil Peyniri",
+     "p": 200,
      "t": ""
     }
    ]
@@ -359,19 +353,13 @@
    "note": "",
    "items": [
     {
-     "n": "Cookie",
+     "n": "American Cookie",
      "d": "",
-     "p": 125,
+     "p": 150,
      "t": ""
     },
     {
-     "n": "San Sebastian Cheesecake",
-     "d": "",
-     "p": 175,
-     "t": ""
-    },
-    {
-     "n": "Yaban Mersinli Cheesecake",
+     "n": "Bal Kabaklı Cheesecake",
      "d": "",
      "p": 175,
      "t": ""
@@ -379,7 +367,7 @@
     {
      "n": "Brownie",
      "d": "",
-     "p": 150,
+     "p": 175,
      "t": ""
     }
    ]
