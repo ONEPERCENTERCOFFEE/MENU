@@ -61,7 +61,7 @@ function sub(){if(ch)return;ch=sb.channel("op");["orders","order_items","payment
 function rl(){clearTimeout(rt);rt=setTimeout(async function(){if(!me)return;await ld();if(view!="report"&&view!="tcfg"&&(!md||md.k=="pay")){if(md)await lpm();R()}},300)}
 async function after(){var u=(await sb.auth.getUser()).data.user;
 if(!u){return false}
-var p=await sb.from("profiles").select("name,role,active").eq("id",u.id).maybeSingle();
+var p=await sb.from("profiles").select("name,role,active,can_approve").eq("id",u.id).maybeSingle();
 if(p.error||!p.data||!p.data.active){await sb.auth.signOut();msg="Bu hesap yetkili değil";return false}
 me=p.data;view="tables";await ld();sub();return true}
 function vLogin(){return'<h1>ONE<br>PERCENTER</h1><p class="mu">Kasa girişi</p><input id="un" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="username" style="margin:6px 0"><input id="pw" type="password" placeholder="Şifre" autocomplete="current-password" style="margin:6px 0 10px"><button class="p w" data-a="lg">Giriş</button><p class="er">'+E(msg)+'</p>'}
@@ -101,7 +101,7 @@ h+='<div class="row"><span>'+E(l.name)+' <span class="mu">'+F(l.price)+'</span><
 h+='<button class="w" data-a="sall" style="margin-top:8px">Tümünü seç</button><h2>Seçilen: '+F(sa)+'</h2><p class="er">'+E(msg)+'</p><div style="display:flex;gap:8px"><button class="p w" data-a="pay" data-v="nakit">Nakit öde</button><button class="p w" data-a="pay" data-v="kart">Kart öde</button></div>'}}
 else{var RS=md.k=="iptal"?["Müşteri vazgeçti","Yanlış sipariş","Hazırlama hatası"]:["Müşteri memnuniyeti","Personel ikramı","Deneme / tadım"];
 h+='<h2 style="margin-top:0">'+(md.k=="iptal"?"Ürünü iptal et":"Ürünü ikram et")+'</h2><select id="rs">'+RS.map(function(x){return'<option>'+x+'</option>'}).join('')+'</select>';
-if(me.role!="yonetici")h+='<input id="ap" type="password" inputmode="numeric" placeholder="Yönetici PIN" style="margin-top:8px">';
+if(me.role!="yonetici"&&!me.can_approve)h+='<input id="ap" type="password" inputmode="numeric" placeholder="Yönetici PIN" style="margin-top:8px">';
 h+='<p class="er">'+E(msg)+'</p><button class="p w" data-a="mk">Onayla</button>'}
 return h+'<button class="w" data-a="mc" style="margin-top:8px">'+(md.k=="pay"?"Geri dön":"Vazgeç")+'</button></div></div>'}
 function tbl(hd,rows){if(!rows.length)return'<p class="mu sm">Kayıt yok.</p>';return'<table><tr>'+hd.map(function(x,i){return'<th'+(i==hd.length-1?' class="r"':'')+'>'+x+'</th>'}).join('')+'</tr>'+rows.map(function(r){return'<tr>'+r.map(function(x,i){return'<td'+(i==r.length-1?' class="r"':'')+'>'+E(x)+'</td>'}).join('')+'</tr>'}).join('')+'</table>'}
@@ -145,7 +145,7 @@ else if(a=="dx"){delete D[tb];sd()}
 else if(a=="dc"){if(await rp("add_items",{p_table:tb,p_items:D[tb].map(function(x){return{name:x.n,price:x.p,qty:x.q}})})){delete D[tb];sd();await ld()}}
 else if(a=="ac")md={k:v,id:i};
 else if(a=="mc")md=null;
-else if(a=="mk"){var pin=me.role=="yonetici"?"":$("ap").value;if(await rp("approve_item",{p_item:md.id,p_status:md.k,p_reason:$("rs").value,p_pin:pin})){md=null;await ld()}}
+else if(a=="mk"){var pin=(me.role=="yonetici"||me.can_approve)?"":$("ap").value;if(await rp("approve_item",{p_item:md.id,p_status:md.k,p_reason:$("rs").value,p_pin:pin})){md=null;await ld()}}
 else if(a=="cl"){md={k:"pay"};sel={};await lpm()}
 else if(a=="sp"){var l4=LN(i);sel[i]=Math.min(l4.qty-l4.paid_qty,(sel[i]||0)+1)}
 else if(a=="sm")sel[i]=Math.max(0,(sel[i]||0)-1);
