@@ -73,8 +73,8 @@ var SEED=[
 function newCard(){return{name:"Yeni kahve",origin:"",process:"",altitude:"",roast:3,notes:[],story:"",methods:[{name:"V60",price:0}],beans:SZ.map(function(z){return{size:z,price:0}})}}
 function norm(){D.sections.forEach(function(s){if(s.type!="brew")return;s.cards=s.cards||[];s.cards.forEach(function(c){c.notes=c.notes||[];c.methods=c.methods||[];var o=c.beans||[];c.beans=SZ.map(function(z){var f=o.filter(function(b){return b.size==z})[0];return{size:z,price:f?+f.price:0}})})})}
 function seedBrew(){var k=D.sections.findIndex(function(x){return/espresso/i.test(x.title)}),at=k<0?0:k+1;
-D.sections.splice(at,0,{title:"Demleme Barı",type:"brew",note:"Nitelikli kahvelerimizi, seçtiğiniz demleme yöntemiyle hazırlıyoruz.",items:[],cards:SEED.map(function(r){return{name:r[0],origin:r[1],process:r[2],altitude:r[3],roast:r[4],notes:r[5].split(", "),story:r[6],methods:r[7].map(function(m){return{name:m[0],price:m[1]}}),beans:SZ.map(function(z,i){return{size:z,price:r[8][i]}})}})});
-if(k>=0)D.sections[k].linkTo="Demleme Barı"}
+D.sections.splice(at,0,{title:"OP Brew Bar",type:"brew",note:"Nitelikli kahvelerimizi, seçtiğiniz demleme yöntemiyle hazırlıyoruz.",items:[],cards:SEED.map(function(r){return{name:r[0],origin:r[1],process:r[2],altitude:r[3],roast:r[4],notes:r[5].split(", "),story:r[6],methods:r[7].map(function(m){return{name:m[0],price:m[1]}}),beans:SZ.map(function(z,i){return{size:z,price:r[8][i]}})}})});
+if(k>=0)D.sections[k].linkTo="OP Brew Bar"}
 var RL=["1 · çok açık","2 · açık","3 · orta","4 · orta-koyu","5 · koyu"];
 function drawBrew(s,i){var h='<div class="card"><div class="bar"><input class="ttl"'+A(i,null,"title")+' value="'+e(s.title)+'" placeholder="Bölüm adı"><button data-a="su"'+A(i)+'>↑</button><button data-a="sd"'+A(i)+'>↓</button><button data-a="sx"'+A(i)+'>Sil</button></div><input class="w"'+A(i,null,"note")+' value="'+e(s.note)+'" placeholder="Bölüm notu (isteğe bağlı)">';
 (s.cards||[]).forEach(function(c,j){var P=' data-s="'+i+'" data-c="'+j+'"';

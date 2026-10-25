@@ -94,7 +94,7 @@ fetch("menu.json?v="+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json
 var nav="",html="";
 d.sections.forEach(function(s,k){var id="b"+k;
 nav+='<a href="#'+id+'">'+e(s.title)+'</a>';
-var lt=s.linkTo?d.sections.findIndex(function(x){return x.title==s.linkTo}):-1;
+var lt=s.linkTo?d.sections.findIndex(function(x){return x.type=="brew"||x.title==s.linkTo}):-1;
 html+='<section id="'+id+'"><h2>'+e(s.title)+'</h2>'+(s.note?'<p class="note">'+(lt>=0?'<a class="lk" href="#b'+lt+'">'+e(s.note)+' →</a>':e(s.note))+'</p>':'');
 (s.type=="brew"?[]:(s.items||[])).forEach(function(i){html+='<div class="item"><div><b>'+e(i.n)+'</b>'+(T[i.t]?'<span class="tag">'+T[i.t]+'</span>':'')+(i.d?'<small>'+e(i.d)+'</small>':'')+'</div><span class="price">'+e(i.p)+'₺</span></div>'});
 if(s.type=="brew")html+=brewCards(s.cards||[]);
