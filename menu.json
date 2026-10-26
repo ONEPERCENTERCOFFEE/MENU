@@ -68,162 +68,36 @@
    "items": [],
    "cards": [
     {
-     "name": "Yirgacheffe Natural",
-     "origin": "Etiyopya · Yirgacheffe",
-     "process": "Natural",
-     "altitude": "1900-2100 m",
-     "roast": 2,
-     "notes": [
-      "yaban mersini",
-      "yasemin",
-      "bal"
-     ],
-     "story": "Güneşte kurutulan, meyvemsi ve çiçeksi bir klasik.",
-     "methods": [
-      {
-       "name": "V60",
-       "price": 140
-      },
-      {
-       "name": "Chemex",
-       "price": 150
-      },
-      {
-       "name": "Aeropress",
-       "price": 130
-      }
-     ],
-     "beans": [
-      {
-       "size": "100 g",
-       "price": 220
-      },
-      {
-       "size": "250 g",
-       "price": 520
-      },
-      {
-       "size": "1 kg",
-       "price": 1900
-      }
-     ]
-    },
-    {
-     "name": "Huila Washed",
-     "origin": "Kolombiya · Huila",
-     "process": "Yıkanmış",
-     "altitude": "1700 m",
+     "name": "Cerrado Natural",
+     "origin": "Etiyopya -Shantawene",
+     "process": "Anaerobic Natural",
+     "altitude": "2000-2200 m",
      "roast": 3,
      "notes": [
-      "karamel",
-      "kırmızı elma",
-      "kakao"
+      "Tropik meyveler",
+      "çarkıfelek meyvesi (passion fruit)",
+      "çilek",
+      "papaya ve arka planda hafif çikolata veya kakao dokunuşları"
      ],
-     "story": "Dengeli, tatlı ve her gün içilebilir.",
+     "story": "Kremsi ve dengeli",
      "methods": [
       {
        "name": "V60",
-       "price": 130
-      },
-      {
-       "name": "French press",
-       "price": 120
-      },
-      {
-       "name": "Aeropress",
-       "price": 120
-      }
-     ],
-     "beans": [
-      {
-       "size": "100 g",
        "price": 200
-      },
-      {
-       "size": "250 g",
-       "price": 460
-      },
-      {
-       "size": "1 kg",
-       "price": 1700
-      }
-     ]
-    },
-    {
-     "name": "Nyeri AA",
-     "origin": "Kenya · Nyeri",
-     "process": "Yıkanmış",
-     "altitude": "1800 m",
-     "roast": 2,
-     "notes": [
-      "frenk üzümü",
-      "mandalina",
-      "siyah çay"
-     ],
-     "story": "Canlı asiditesiyle parlak ve aromatik.",
-     "methods": [
-      {
-       "name": "V60",
-       "price": 160
-      },
-      {
-       "name": "Chemex",
-       "price": 170
       }
      ],
      "beans": [
       {
        "size": "100 g",
-       "price": 260
+       "price": 350
       },
       {
        "size": "250 g",
-       "price": 600
+       "price": 850
       },
       {
        "size": "1 kg",
-       "price": 2200
-      }
-     ]
-    },
-    {
-     "name": "Cerrado Natural",
-     "origin": "Brezilya · Cerrado",
-     "process": "Natural",
-     "altitude": "1100 m",
-     "roast": 4,
-     "notes": [
-      "fındık",
-      "çikolata",
-      "kuru kayısı"
-     ],
-     "story": "Yumuşak gövdeli, tatlı ve kremsi.",
-     "methods": [
-      {
-       "name": "V60",
-       "price": 120
-      },
-      {
-       "name": "French press",
-       "price": 110
-      },
-      {
-       "name": "Aeropress",
-       "price": 110
-      }
-     ],
-     "beans": [
-      {
-       "size": "100 g",
-       "price": 170
-      },
-      {
-       "size": "250 g",
-       "price": 400
-      },
-      {
-       "size": "1 kg",
-       "price": 1450
+       "price": 3000
       }
      ]
     },
