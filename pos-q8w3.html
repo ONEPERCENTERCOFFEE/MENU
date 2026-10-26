@@ -32,10 +32,14 @@ h1{font-size:30px;font-weight:800;margin:20px 0 4px;line-height:1}h2{font-size:1
 </head>
 <body>
 <div id="app"><p class="mu">Yükleniyor...</p></div>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 var sb=supabase.createClient("https://ojfmpnqyrdfybbmchbvq.supabase.co","sb_publishable_oS6qBLKqbAPCBCzGVe5efw_AFqvCPoG");
 var $=function(i){return document.getElementById(i)};
+var TK="0x4AAAAAAFli3uwc6xrSxT7j",TT="",TW=null;
+function tsr(id){var el=$(id);if(!el)return;if(!window.turnstile){setTimeout(function(){tsr(id)},300);return}TT="";TW=turnstile.render(el,{sitekey:TK,theme:"dark",callback:function(t){TT=t},"expired-callback":function(){TT=""},"error-callback":function(){TT=""}})}
+
 function E(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function F(n){return Number(n).toLocaleString("tr-TR")+"₺"}
 var C=[],TL=[],TN={},me=null,view="login",tb=0,ct=0,md=null,msg="",O={},sel={},PM=[],RP=null,busy=false,ch=null,rt=null;
@@ -64,7 +68,7 @@ if(!u){return false}
 var p=await sb.from("profiles").select("name,role,active,can_approve").eq("id",u.id).maybeSingle();
 if(p.error||!p.data||!p.data.active){await sb.auth.signOut();msg="Bu hesap yetkili değil";return false}
 me=p.data;view="tables";await ld();sub();return true}
-function vLogin(){return'<h1>ONE<br>PERCENTER</h1><p class="mu">Kasa girişi</p><input id="un" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="username" style="margin:6px 0"><input id="pw" type="password" placeholder="Şifre" autocomplete="current-password" style="margin:6px 0 10px"><button class="p w" data-a="lg">Giriş</button><p class="er">'+E(msg)+'</p>'}
+function vLogin(){return'<h1>ONE<br>PERCENTER</h1><p class="mu">Kasa girişi</p><input id="un" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="username" style="margin:6px 0"><input id="pw" type="password" placeholder="Şifre" autocomplete="current-password" style="margin:6px 0 10px"><div id="ts" style="margin:0 0 10px"></div><button class="p w" data-a="lg">Giriş</button><p class="er">'+E(msg)+'</p>'}
 function vTables(){var h='<div class="top"><b>'+E(me.name)+'</b><span>'+(me.role=="yonetici"?'<button data-a="tc">Masalar</button> <button data-a="rep">Rapor</button> ':'')+'<button data-a="out">Çıkış</button></span></div>'+(msg?'<p class="er">'+E(msg)+'</p>':'')+'<div class="grid">';
 TL.forEach(function(t){var o=O[t.id];h+='<button class="tb'+(o?' f':'')+'" data-a="tb" data-i="'+t.id+'">'+E(t.name)+'<br><span class="sm">'+(o?F(due(o)):'Boş')+'</span></button>'})
 return h+'</div>'}
@@ -121,13 +125,13 @@ h+=(Object.keys(DY).length>1?'<h2>Günlere göre</h2>'+tbl(["Tarih","Hesap","Cir
 h+='<h2>Garson bazında tahsilat</h2>'+tbl(["Kişi","İşlem","Tutar"],Object.keys(W).map(function(k){return[k,Object.keys(W[k][0]).length,F(W[k][1])]}));
 h+='<h2>İptal ve ikram kayıtları</h2>'+tbl(["Ürün","Tür","Neden","Ekleyen · onaylayan"],X);
 return h}
-function R(){if(!$("app"))return;var h=view=="login"?vLogin():view=="tables"?vTables():view=="order"?vOrder():view=="tcfg"?vTcfg():vReport();$("app").innerHTML=h+(md&&me?vModal():"")}
+function R(){if(!$("app"))return;var h=view=="login"?vLogin():view=="tables"?vTables():view=="order"?vOrder():view=="tcfg"?vTcfg():vReport();$("app").innerHTML=h+(md&&me?vModal():"");if(view=="login")tsr("ts")}
 document.addEventListener("change",async function(ev){if(ev.target.id=="rd"||ev.target.id=="re"){if(ev.target.id=="rd")rd=ev.target.value||rd;else re=ev.target.value||re;if(rd>re){if(ev.target.id=="rd")re=rd;else rd=re}RP=null;R();await lrep();R()}});
 document.addEventListener("click",async function(ev){var b=ev.target.closest("[data-a]");if(!b||busy)return;busy=true;
 var a=b.dataset.a,i=+b.dataset.i,v=b.dataset.v;msg="";
 try{
 if(a=="lg"){var u=$("un").value.trim().toLowerCase().replace(/\s+/g,""),pw=$("pw").value;
-if(!u||!pw)msg="Kullanıcı adı ve şifre girin";else{var r=await sb.auth.signInWithPassword({email:u+"@op.example.com",password:pw});if(r.error)msg="Kullanıcı adı ya da şifre yanlış";else await after()}}
+if(!u||!pw)msg="Kullanıcı adı ve şifre girin";else if(!TT)msg="Lütfen doğrulamayı tamamlayın";else{var r=await sb.auth.signInWithPassword({email:u+"@op.example.com",password:pw,options:{captchaToken:TT}});if(r.error)msg=/captcha/i.test(r.error.message)?"Doğrulama başarısız, tekrar deneyin":"Kullanıcı adı ya da şifre yanlış";else await after()}}
 else if(a=="out"){await sb.auth.signOut();if(ch){sb.removeChannel(ch);ch=null}me=null;O={};view="login"}
 else if(a=="tb"){tb=i;ct=0;view="order";await ld()}
 else if(a=="bk"){view="tables";await ld()}
