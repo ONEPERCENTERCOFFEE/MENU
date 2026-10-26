@@ -135,11 +135,11 @@
      ]
     },
     {
-     "name": "Geisha Reserva",
-     "origin": "Panama · Boquete",
-     "process": "Yıkanmış",
+     "name": "El Progreso",
+     "origin": "Kolombiya",
+     "process": "Anaerobic Fermantasyon",
      "altitude": "1700 m",
-     "roast": 1,
+     "roast": 3,
      "notes": [
       "bergamot",
       "şeftali",
@@ -149,21 +149,21 @@
      "methods": [
       {
        "name": "V60",
-       "price": 280
+       "price": 225
       }
      ],
      "beans": [
       {
        "size": "100 g",
-       "price": 750
+       "price": 450
       },
       {
        "size": "250 g",
-       "price": 0
+       "price": 1100
       },
       {
        "size": "1 kg",
-       "price": 0
+       "price": 4000
       }
      ]
     }
