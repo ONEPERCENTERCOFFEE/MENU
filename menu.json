@@ -102,9 +102,9 @@
      ]
     },
     {
-     "name": "Antigua",
-     "origin": "Guatemala · Antigua",
-     "process": "Yıkanmış",
+     "name": "Monte Blanco Passion Fruit",
+     "origin": "Kolombiya",
+     "process": "Infuse",
      "altitude": "1600 m",
      "roast": 3,
      "notes": [
@@ -115,26 +115,22 @@
      "story": "Volkanik toprağın verdiği zengin ve derin bir fincan.",
      "methods": [
       {
-       "name": "Chemex",
-       "price": 140
-      },
-      {
        "name": "V60",
-       "price": 130
+       "price": 225
       }
      ],
      "beans": [
       {
        "size": "100 g",
-       "price": 190
+       "price": 450
       },
       {
        "size": "250 g",
-       "price": 440
+       "price": 1100
       },
       {
        "size": "1 kg",
-       "price": 1600
+       "price": 4000
       }
      ]
     },
