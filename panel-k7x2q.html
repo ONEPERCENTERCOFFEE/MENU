@@ -76,9 +76,9 @@ function seedBrew(){var k=D.sections.findIndex(function(x){return/espresso/i.tes
 D.sections.splice(at,0,{title:"OP Brew Bar",type:"brew",note:"Nitelikli kahvelerimizi, seçtiğiniz demleme yöntemiyle hazırlıyoruz.",items:[],cards:SEED.map(function(r){return{name:r[0],origin:r[1],process:r[2],altitude:r[3],roast:r[4],notes:r[5].split(", "),story:r[6],methods:r[7].map(function(m){return{name:m[0],price:m[1]}}),beans:SZ.map(function(z,i){return{size:z,price:r[8][i]}})}})});
 if(k>=0)D.sections[k].linkTo="OP Brew Bar"}
 var RL=["1 · çok açık","2 · açık","3 · orta","4 · orta-koyu","5 · koyu"];
-function drawBrew(s,i){var h='<div class="card"><div class="bar"><input class="ttl"'+A(i,null,"title")+' value="'+e(s.title)+'" placeholder="Bölüm adı"><button data-a="su"'+A(i)+'>↑</button><button data-a="sd"'+A(i)+'>↓</button><button data-a="sx"'+A(i)+'>Sil</button></div><input class="w"'+A(i,null,"note")+' value="'+e(s.note)+'" placeholder="Bölüm notu (isteğe bağlı)">';
+function drawBrew(s,i){var h='<div class="card"><div class="bar"><input class="ttl"'+A(i,null,"title")+' value="'+e(s.title)+'" placeholder="Bölüm adı"><button data-a="su"'+A(i)+'>↑</button><button data-a="sd"'+A(i)+'>↓</button><button data-a="sx"'+A(i)+'>Sil</button></div><input class="w"'+A(i,null,"note")+' value="'+e(s.note)+'" placeholder="Bölüm notu (isteğe bağlı)">'+SV(i,s);
 (s.cards||[]).forEach(function(c,j){var P=' data-s="'+i+'" data-c="'+j+'"';
-h+='<div class="it" style="display:block"><div class="bar"><input class="ttl"'+P+' data-f="name" value="'+e(c.name)+'" placeholder="Kahve adı"><button data-a="cu"'+P+'>↑</button><button data-a="cd"'+P+'>↓</button><button class="d" data-a="cx"'+P+'>Sil</button></div>';
+h+='<div class="it" style="display:block"><div class="bar"><input class="ttl"'+P+' data-f="name" value="'+e(c.name)+'" placeholder="Kahve adı"><button data-a="cu"'+P+'>↑</button><button data-a="cd"'+P+'>↓</button><button class="d" data-a="cx"'+P+'>Sil</button></div>'+CV(P,c);
 h+='<input class="w"'+P+' data-f="origin" value="'+e(c.origin)+'" placeholder="Menşe (örn. Etiyopya · Yirgacheffe)" style="margin-bottom:6px"><div style="display:flex;gap:6px;margin-bottom:6px"><input'+P+' data-f="process" value="'+e(c.process)+'" placeholder="İşlem"><input'+P+' data-f="altitude" value="'+e(c.altitude)+'" placeholder="Rakım"><select'+P+' data-f="roast">'+RL.map(function(t,k){return'<option value="'+(k+1)+'"'+(c.roast==k+1?' selected':'')+'>'+t+'</option>'}).join('')+'</select></div>';
 h+='<input class="w"'+P+' data-f="notes" value="'+e((c.notes||[]).join(", "))+'" placeholder="Tadım notları (virgülle ayırın)" style="margin-bottom:6px"><input class="w"'+P+' data-f="story" value="'+e(c.story)+'" placeholder="Kısa hikâye cümlesi (isteğe bağlı)" style="margin-bottom:8px">';
 h+='<div class="mu sm">Demleme yöntemleri</div>';
@@ -87,12 +87,14 @@ h+='<button data-a="ma"'+P+' style="margin:4px 0 10px">+ Yöntem ekle</button><d
 c.beans.forEach(function(b,k){h+='<label style="flex:1;margin:0"><span class="mu sm">'+b.size+'</span><input type="number" inputmode="numeric"'+P+' data-b="'+k+'" data-f="bprice" value="'+e(b.price)+'"></label>'});
 h+='</div></div>'});
 return h+'<button data-a="ca" data-s="'+i+'">+ Kahve ekle</button></div>'}
+function SV(i,s){return'<label class="cb" style="margin:10px 0"><input type="checkbox"'+A(i,null,"v")+(s.v===false?'':' checked')+'> Bölüm menüde görünsün</label>'}
+function CV(P,c){return'<label class="cb" style="margin:0 0 8px"><input type="checkbox"'+P+' data-f="v"'+(c.v===false?'':' checked')+'> Menüde göster</label>'}
 function draw(){var h="";
 D.sections.forEach(function(s,i){if(s.type=="brew"){h+=drawBrew(s,i);return}
 h+='<div class="card"><div class="bar"><input class="ttl"'+A(i,null,"title")+' value="'+e(s.title)+'" placeholder="Bölüm adı"><button data-a="su"'+A(i)+'>↑</button><button data-a="sd"'+A(i)+'>↓</button><button data-a="sx"'+A(i)+'>Sil</button></div>';
-h+='<input class="w"'+A(i,null,"note")+' value="'+e(s.note)+'" placeholder="Bölüm notu (isteğe bağlı)">';
+h+='<input class="w"'+A(i,null,"note")+' value="'+e(s.note)+'" placeholder="Bölüm notu (isteğe bağlı)">'+SV(i,s);
 s.items.forEach(function(m,j){
-h+='<div class="it"><input class="g"'+A(i,j,"n")+' value="'+e(m.n)+'" placeholder="Ürün adı"><input class="pr" type="number" inputmode="numeric"'+A(i,j,"p")+' value="'+e(m.p)+'"><input class="w"'+A(i,j,"d")+' value="'+e(m.d)+'" placeholder="Açıklama (isteğe bağlı)"><select'+A(i,j,"t")+'>';
+h+='<div class="it"'+(m.v===false?' style="opacity:.55"':"")+'><input class="g"'+A(i,j,"n")+' value="'+e(m.n)+'" placeholder="Ürün adı"><input class="pr" type="number" inputmode="numeric"'+A(i,j,"p")+' value="'+e(m.p)+'"><input class="w"'+A(i,j,"d")+' value="'+e(m.d)+'" placeholder="Açıklama (isteğe bağlı)"><label class="cb" style="flex:1 1 100%;margin:2px 0;font-size:14px"><input type="checkbox"'+A(i,j,"v")+(m.v===false?'':' checked')+'> Menüde göster</label><select'+A(i,j,"t")+'>';
 TG.forEach(function(t){h+='<option value="'+t[0]+'"'+(m.t==t[0]?" selected":"")+">"+t[1]+"</option>"});
 h+='</select><button data-a="iu"'+A(i,j)+'>↑</button><button data-a="id"'+A(i,j)+'>↓</button><button data-a="ix"'+A(i,j)+'>Sil</button></div>'});
 h+='<button data-a="ia"'+A(i)+'>+ Ürün ekle</button></div>'});
@@ -102,8 +104,8 @@ if(t.dataset.c!=null){var cd=D.sections[t.dataset.s].cards[t.dataset.c],v=t.valu
 if(f=="mname")cd.methods[t.dataset.m].name=v;else if(f=="mprice")cd.methods[t.dataset.m].price=v===""?0:Number(v);
 else if(f=="bprice")cd.beans[t.dataset.b].price=v===""?0:Number(v);
 else if(f=="notes")cd.notes=v.split(",").map(function(x){return x.trim()}).filter(Boolean);
-else if(f=="roast")cd.roast=+v;else cd[f]=v;mark();return}
-var o=t.dataset.i!=null?D.sections[t.dataset.s].items[t.dataset.i]:D.sections[t.dataset.s];o[f]=f=="p"?(t.value===""?0:Number(t.value)):t.value;mark()});
+else if(f=="roast")cd.roast=+v;else if(f=="v")cd.v=t.checked;else cd[f]=v;mark();return}
+var o=t.dataset.i!=null?D.sections[t.dataset.s].items[t.dataset.i]:D.sections[t.dataset.s];o[f]=f=="v"?t.checked:f=="p"?(t.value===""?0:Number(t.value)):t.value;mark()});
 $("list").addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;var a=b.dataset.a,s=+b.dataset.s,i=+b.dataset.i,S=D.sections;
 function mv(r,k,d){var n=k+d;if(n<0||n>=r.length)return;var x=r[k];r[k]=r[n];r[n]=x}
 var c=+b.dataset.c,m=+b.dataset.m;

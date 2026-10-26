@@ -91,6 +91,7 @@ var sp=[["İşlem",k.process],["Rakım",k.altitude]].filter(function(x){return x
 var bs=(k.beans||[]).filter(function(b){return +b.price>0});
 return'<article class="k"><h3>'+e(k.name)+'</h3>'+(k.origin?'<span class="ori">'+e(k.origin)+'</span>':'')+(sp?'<dl class="sp">'+sp+'</dl>':'')+((k.notes||[]).length?'<div class="nt">'+k.notes.map(function(n){return'<span>'+e(n)+'</span>'}).join("")+'</div>':'')+(k.story?'<p class="st">'+e(k.story)+'</p>':'')+((k.methods||[]).length?'<ul class="br">'+k.methods.map(function(m){return'<li><span>'+e(m.name)+'</span><b>'+e(m.price)+'₺</b></li>'}).join("")+'</ul>':'')+(bs.length?'<div class="bean"><span>Çekirdek</span><div class="sz">'+bs.map(function(b){return'<span>'+e(b.size)+'<b>'+e(b.price)+'₺</b></span>'}).join("")+'</div></div>':'')+'</article>'}).join("")}
 fetch("menu.json?v="+Date.now()).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+d.sections=d.sections.filter(function(s){return s.v!==false}).map(function(s){var c=JSON.parse(JSON.stringify(s));c.items=(c.items||[]).filter(function(i){return i.v!==false});c.cards=(c.cards||[]).filter(function(k){return k.v!==false});return c}).filter(function(s){return s.type=="brew"?s.cards.length:s.items.length});
 var nav="",html="";
 d.sections.forEach(function(s,k){var id="b"+k;
 nav+='<a href="#'+id+'">'+e(s.title)+'</a>';
