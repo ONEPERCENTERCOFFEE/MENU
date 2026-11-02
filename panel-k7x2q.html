@@ -20,45 +20,52 @@ label{display:block;margin:12px 0 4px;font-size:13px;color:var(--mu)}
 #bar{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--ln);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;justify-content:space-between}
 details{margin:12px 0}summary{cursor:pointer;color:var(--mu)}ol{padding-left:20px}
 </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 </head>
 <body>
 <h1>Menü Yönetimi</h1>
 <div id="login">
-<p>Menüyü düzenlemek için GitHub erişim anahtarınızı girin. Anahtar olmadan kimse değişiklik yapamaz.</p>
-<label>Depo</label><input class="w" id="repo" value="ONEPERCENTERCOFFEE/MENU">
-<label>Branch</label><input class="w" id="br" value="main">
-<label>Erişim anahtarı (token)</label><input class="w" id="tok" type="password" autocomplete="off" placeholder="github_pat_...">
-<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="rem"> Bu cihazda hatırla (ortak bilgisayarda işaretlemeyin)</label>
+<p>Menüyü düzenlemek için yönetici kullanıcı adı ve şifrenizle giriş yapın.</p>
+<label>Kullanıcı adı</label><input class="w" id="un" autocapitalize="none" autocomplete="username">
+<label>Şifre</label><input class="w" id="pw" type="password" autocomplete="current-password">
+<div id="ts" style="margin:12px 0"></div>
 <p><button class="pri" id="go">Giriş yap</button></p>
-<details><summary>Erişim anahtarı nasıl alınır?</summary>
-<ol>
-<li>GitHub'da sağ üstteki profil resmi > Settings.</li>
-<li>Sol menüde en altta Developer settings > Personal access tokens > Fine-grained tokens > Generate new token.</li>
-<li>Bir ad verin (örn. menü), süre seçin (örn. 1 yıl).</li>
-<li>Repository access: Only select repositories > MENU.</li>
-<li>Permissions > Repository permissions > Contents: Read and write.</li>
-<li>Generate token deyip çıkan anahtarı kopyalayın ve yukarıya yapıştırın. Bir daha gösterilmez, güvenli bir yere kaydedin.</li>
-</ol></details>
 </div>
 <div id="ed" hidden>
-<p class="mu">Değişiklikler yalnızca "Kaydet"e basınca yayına gider. <button id="out">Çıkış</button></p>
+<p class="mu">Değişiklikler yalnızca "Kaydet"e basınca menüye yansır. <button id="hist">Sürüm geçmişi</button> <button id="out">Çıkış</button></p>
+<div id="hs" hidden class="card"></div>
 <div id="list"></div>
 </div>
-<div id="bar"><span id="st" class="mu"></span><button class="pri" id="sv" hidden>Kaydet</button></div>
+<div id="bar"><span id="st" class="mu"></span><span style="display:flex;gap:6px;align-items:center"><input id="nt" placeholder="Not (isteğe bağlı)" style="max-width:190px"><button class="pri" id="sv" hidden>Kaydet</button></span></div>
 <script>
 var $=function(i){return document.getElementById(i)},D=null,sha=null;
 function e(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function st(m,c){var s=$("st");s.textContent=m;s.style.color=c||""}
-function cfg(){return{r:$("repo").value.trim(),b:$("br").value.trim()||"main",t:$("tok").value.trim()}}
-function api(method,body){var c=cfg();var u="https://api.github.com/repos/"+c.r+"/contents/menu.json"+(method=="GET"?"?ref="+encodeURIComponent(c.b)+"&t="+Date.now():"");
-return fetch(u,{method:method,headers:{Authorization:"Bearer "+c.t,Accept:"application/vnd.github+json"},body:body?JSON.stringify(body):undefined}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(r.status==401?"Anahtar geçersiz ya da süresi dolmuş":r.status==404?"Depo ya da menu.json bulunamadı (anahtarın MENU deposuna erişimi var mı?)":(j.message||r.status));return j})})}
-function load(){var c=cfg();if(!c.t){st("Önce erişim anahtarını girin","#ff7b7b");return}
-st("Yükleniyor...");
-api("GET").then(function(j){sha=j.sha;var bin=atob(j.content.replace(/\n/g,""));D=JSON.parse(new TextDecoder().decode(Uint8Array.from(bin,function(ch){return ch.charCodeAt(0)})));
-try{if($("rem").checked)localStorage.setItem("opm",JSON.stringify(c));else localStorage.removeItem("opm")}catch(x){}
-norm();$("login").hidden=true;$("ed").hidden=false;$("sv").hidden=false;draw();st("Yüklendi","#7ddc8a")}).catch(function(x){st("Hata: "+x.message,"#ff7b7b")})}
-function save(){st("Kaydediliyor...");var c=cfg();var bytes=new TextEncoder().encode(JSON.stringify(D,null,1));var bin=Array.from(bytes,function(b){return String.fromCharCode(b)}).join("");
-api("PUT",{message:"Menü güncellendi",content:btoa(bin),sha:sha,branch:c.b}).then(function(j){sha=j.content.sha;st("Kaydedildi. 1-2 dakika içinde yayında.","#7ddc8a")}).catch(function(x){st("Kaydedilemedi: "+x.message,"#ff7b7b")})}
+var sb=supabase.createClient("https://ojfmpnqyrdfybbmchbvq.supabase.co","sb_publishable_oS6qBLKqbAPCBCzGVe5efw_AFqvCPoG"),curVer=null;
+var TK="0x4AAAAAAFli3uwc6xrSxT7j",TT="";
+function tsr(id){var el=$(id);if(!el)return;if(!window.turnstile){setTimeout(function(){tsr(id)},300);return}TT="";turnstile.render(el,{sitekey:TK,theme:"dark",callback:function(t){TT=t},"expired-callback":function(){TT=""},"error-callback":function(){TT=""}})}
+async function after(){var u=(await sb.auth.getUser()).data.user;if(!u)return false;
+var p=await sb.from("profiles").select("name,role,active").eq("id",u.id).maybeSingle();
+if(!p.data||p.data.role!="yonetici"||!p.data.active){await sb.auth.signOut();st("Bu sayfa yalnızca yönetici içindir","#ff7b7b");return false}
+st("Yükleniyor...");var r=await sb.from("menu_data").select("menu,version_id").eq("id",1).maybeSingle();if(r.error)throw r.error;
+if(r.data){D=r.data.menu;curVer=r.data.version_id}
+else{st("Eski menü içe aktarılıyor...");var f=await fetch("menu.json?t="+Date.now());D=await f.json();var s=await sb.rpc("save_menu",{p_menu:D,p_note:"Eski menu.json içe aktarıldı"});if(s.error)throw s.error;curVer=s.data}
+norm();$("login").hidden=true;$("ed").hidden=false;$("sv").hidden=false;draw();st("Yüklendi","#7ddc8a");return true}
+async function login(){var u=$("un").value.trim().toLowerCase().replace(/\s+/g,""),pw=$("pw").value;if(!u||!pw){st("Kullanıcı adı ve şifre girin","#ff7b7b");return}
+if(!TT){st("Lütfen doğrulamayı tamamlayın","#ff7b7b");return}
+var r=await sb.auth.signInWithPassword({email:u+"@op.example.com",password:pw,options:{captchaToken:TT}});
+if(r.error){st(/captcha/i.test(r.error.message)?"Doğrulama başarısız, sayfayı yenileyip tekrar deneyin":"Kullanıcı adı ya da şifre yanlış","#ff7b7b");return}
+try{await after()}catch(x){st("Hata: "+(x.message||x),"#ff7b7b")}}
+async function save(){st("Kaydediliyor...");var r=await sb.rpc("save_menu",{p_menu:D,p_note:$("nt").value});
+if(r.error){st("Kaydedilemedi: "+r.error.message,"#ff7b7b");return}curVer=r.data;$("nt").value="";st("Kaydedildi. Menüde hemen görünür.","#7ddc8a");if(!$("hs").hidden)hist()}
+async function hist(){var hs=$("hs");hs.hidden=false;hs.innerHTML='<p class="mu">Yükleniyor...</p>';
+var r=await sb.from("menu_versions").select("id,note,created_by_name,created_at").order("id",{ascending:false}).limit(30);
+if(r.error){hs.innerHTML='<p style="color:#ff7b7b">'+e(r.error.message)+'</p>';return}
+hs.innerHTML='<div class="bar"><b style="flex:1">Sürüm geçmişi</b><button id="hx">Kapat</button></div><p class="mu" style="margin:0 0 6px">Bir sürüme dönünce menü o hâline gelir. Güncel hâl kaybolmaz, geçmişte durur ve yeniden dönülebilir.</p>'+(r.data.map(function(v){return'<div class="it" style="align-items:center"><div style="flex:1;min-width:160px"><b>'+new Date(v.created_at).toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})+'</b>'+(v.id==curVer?' <span style="color:#7ddc8a">· şu an yayında</span>':'')+'<div class="mu" style="font-size:12.5px">'+e(v.note||"")+(v.created_by_name?" · "+e(v.created_by_name):"")+'</div></div>'+(v.id==curVer?'':'<button data-rv="'+v.id+'">Bu sürüme dön</button>')+'</div>'}).join("")||'<p class="mu">Henüz sürüm yok.</p>')}
+async function restore(id){if(!confirm("Menü bu sürüme geri alınsın mı? Kaydedilmemiş değişiklikleriniz kaybolur."))return;st("Geri alınıyor...");
+var r=await sb.rpc("restore_menu",{p_version:id});if(r.error){st("Geri alınamadı: "+r.error.message,"#ff7b7b");return}
+var m=await sb.from("menu_data").select("menu,version_id").eq("id",1).maybeSingle();D=m.data.menu;curVer=m.data.version_id;norm();draw();st("Geri alındı. Menüde hemen görünür.","#7ddc8a");hist()}
 function mark(){st("Kaydedilmemiş değişiklikler var","#ffd479")}
 function A(s,i,f){return ' data-s="'+s+'"'+(i!=null?' data-i="'+i+'"':"")+(f?' data-f="'+f+'"':"")}
 var TG=[["","Simge yok"],["c","❄ Soğuk"],["h","☕ Sıcak"],["b","❄ ☕ İkisi"]];
@@ -122,9 +129,11 @@ else if(a=="ia")S[s].items.push({n:"",d:"",p:0,t:""});
 else if(a=="iu")mv(S[s].items,i,-1);else if(a=="id")mv(S[s].items,i,1);
 else if(a=="ix"){if(!confirm("Bu ürün silinsin mi?"))return;S[s].items.splice(i,1)}
 mark();draw()});
-$("go").onclick=load;$("sv").onclick=save;
-$("out").onclick=function(){try{localStorage.removeItem("opm")}catch(x){}location.reload()};
-try{var sv=JSON.parse(localStorage.getItem("opm")||"null");if(sv){$("repo").value=sv.r;$("br").value=sv.b;$("tok").value=sv.t;$("rem").checked=true;load()}}catch(x){}
+$("go").onclick=login;$("sv").onclick=save;$("hist").onclick=hist;
+$("out").onclick=async function(){await sb.auth.signOut();location.reload()};
+document.addEventListener("click",function(ev){var b=ev.target.closest("button");if(!b)return;if(b.id=="hx")$("hs").hidden=true;else if(b.dataset.rv)restore(+b.dataset.rv)});
+tsr("ts");
+(async function(){try{var s=await sb.auth.getSession();if(s.data.session)await after()}catch(x){st("Hata: "+(x.message||x),"#ff7b7b")}})();
 </script>
 </body>
 </html>
